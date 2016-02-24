@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+indent() {
+  sed -u 's/^/       /'
+}
 
 build_pack_dir=$(cd $(dirname $(dirname $0)); pwd)
 
@@ -69,6 +72,7 @@ install_and_cache_npm_deps
 
 echo "-----> Fetching dependencies for Elm"
 elm package install --yes | indent
+elm package install evancz/elm-html --yes | indent
 
 compile
 
