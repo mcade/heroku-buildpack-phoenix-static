@@ -40,9 +40,9 @@ download() {
            fi
 }
 echo "-----> Retrieving elm version 0.16"
-download https://s3.amazonaws.com/heroku-buildpack-elm/assets/elm/0.16/elm elm
-download https://s3.amazonaws.com/heroku-buildpack-elm/assets/elm/0.16/elm-package elm-package
-download https://s3.amazonaws.com/heroku-buildpack-elm/assets/elm/0.16/elm-make elm-make
+download https://s3.amazonaws.com/heroku-buildpack-elm/assets/elm/0.16/elm
+download https://s3.amazonaws.com/heroku-buildpack-elm/assets/elm/0.16/elm-package
+download https://s3.amazonaws.com/heroku-buildpack-elm/assets/elm/0.16/elm-make
 
 head "Building dependencies"
 install_and_cache_npm_deps
