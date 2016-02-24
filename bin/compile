@@ -14,6 +14,7 @@ mkdir -p $heroku_dir/node
 source ${build_pack_dir}/lib/common.sh
 source ${build_pack_dir}/lib/build.sh
 
+ELM_VERSION=${ELM_VERSION:-0.16}
 old_npm=$(file_contents "$cache_dir/npm-version")
 old_node=$(file_contents "$cache_dir/node-version")
 
@@ -39,10 +40,29 @@ download() {
             wget -nv -c ${url}/${basename}
            fi
 }
+
+mkcd()
+{
+    mkdir -p $1 && cd $1
+}
+
+PATH=${cache_dir}/bin/elm-${ELM_VERSION}:$PATH
+
+mkcd ${cache_dir}/bin/elm-${ELM_VERSION}
+
 echo "-----> Retrieving elm version 0.16"
-download https://s3.amazonaws.com/heroku-buildpack-elm/assets/elm/0.16/elm
-download https://s3.amazonaws.com/heroku-buildpack-elm/assets/elm/0.16/elm-package
-download https://s3.amazonaws.com/heroku-buildpack-elm/assets/elm/0.16/elm-make
+download https://s3.amazonaws.com/heroku-buildpack-elm/assets/elm/0.16 elm
+download https://s3.amazonaws.com/heroku-buildpack-elm/assets/elm/0.16 elm-package
+download https://s3.amazonaws.com/heroku-buildpack-elm/assets/elm/0.16 elm-make
+
+chmod -R a+x ${cache_dir}/bin
+
+# Restore elm package cache
+if test -d ${cache_dir}/web/elm/elm-stuff; then
+   echo "-----> Restoring Elm cache"
+   cp -r ${cache_dir}/web/elm/elm-stuff ${build}/web/elm/elm-stuff
+fi
+
 
 head "Building dependencies"
 install_and_cache_npm_deps
