@@ -29,10 +29,29 @@ download_node
 install_node
 install_npm
 
+download() {
+           url=$1
+           basename=$2
+           if test -f ${basename}
+           then
+            true
+           else
+            wget -nv -c ${url}/${basename}
+           fi
+}
+echo "-----> Retrieving elm version 0.16"
+download https://s3.amazonaws.com/heroku-buildpack-elm/assets/elm/0.16/elm elm
+download https://s3.amazonaws.com/heroku-buildpack-elm/assets/elm/0.16/elm-package elm-package
+download https://s3.amazonaws.com/heroku-buildpack-elm/assets/elm/0.16/elm-make elm-make
+
 head "Building dependencies"
 install_and_cache_npm_deps
+
+echo "-----> Fetching dependencies for Elm"
+elm package install --yes | indent
 
 compile
 
 head "Finalizing build"
 write_profile
+
