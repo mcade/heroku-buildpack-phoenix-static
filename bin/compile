@@ -71,8 +71,8 @@ head "Building dependencies"
 install_and_cache_npm_deps
 
 echo "-----> Fetching dependencies for Elm"
-elm package install --yes | indent
-elm package install evancz/elm-html --yes | indent
+# elm package install --yes | indent
+# elm package install evancz/elm-html --yes | indent
 
 compile
 
